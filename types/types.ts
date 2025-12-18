@@ -1,12 +1,12 @@
 export enum Condition {
-  Under = "under",
-  Over = "over",
+  Under = "Under",
+  Over = "Over",
 }
 
 export interface GameHistory {
   diceResult: number;
   condition: Condition;
-  timestamp: Date;
+  timestamp: string;
   isWin: boolean;
   selectedNumber: number;
 }
