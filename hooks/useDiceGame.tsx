@@ -1,0 +1,46 @@
+import { Comparison, Condition, GameResult } from "@/types/types";
+import { useState } from "react";
+
+const MIN = 1;
+const MAX = 100;
+
+export const useDiceGame = () => {
+  const [condition, setCondition] = useState<Condition>(Condition.Under);
+  const [selectedNumber, setSelectedNumber] = useState<number>(0);
+  const [diceResult, setDiceResult] = useState<GameResult | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const rollDice = () => {
+    const value = Math.floor(Math.random() * 100) + 1;
+    let isWin = false;
+    let comparison: Comparison = Comparison.Equal;
+
+    if (value > selectedNumber) {
+      comparison = Comparison.Higher;
+      isWin = condition === Condition.Over;
+    } else if (value < selectedNumber) {
+      comparison = Comparison.Lower;
+      isWin = condition === Condition.Under;
+    } else {
+      isWin = false;
+    }
+
+    setDiceResult({ value, isWin, comparison });
+    setOpenSnackbar(true);
+  };
+
+  const closeSnackbar = () => setOpenSnackbar(false);
+
+  return {
+    condition,
+    setCondition,
+    selectedNumber,
+    setSelectedNumber,
+    diceResult,
+    rollDice,
+    openSnackbar,
+    closeSnackbar,
+    MIN,
+    MAX,
+  };
+};
