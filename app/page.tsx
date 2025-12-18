@@ -1,6 +1,10 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { DiceGame } from "@/components/DiceGame";
+import { Box } from "@mui/material";
 
 export default function Home() {
-  return <div>Hello Dice game</div>;
+  return (
+    <Box component={"main"} sx={{ display: "flex", justifyContent: "center" }}>
+      <DiceGame />
+    </Box>
+  );
 }
