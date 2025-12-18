@@ -5,10 +5,25 @@ const MAX_HISTORY_LENGTH = 10;
 const STORAGE_KEY = "game_history";
 
 export const useGameHistory = () => {
-  const [history, setHistory] = useState<GameHistory[]>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [history, setHistory] = useState<GameHistory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          setHistory(JSON.parse(stored));
+        }
+      } catch (error) {
+        console.error("Failed to load history:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
 
   const addToHistory = (result: GameHistory) => {
     setHistory((prev) => {
@@ -21,8 +36,14 @@ export const useGameHistory = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-  }, [history]);
+    if (!isLoading && typeof window !== "undefined") {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+      } catch (error) {
+        console.error("Failed to save history:", error);
+      }
+    }
+  }, [history, isLoading]);
 
-  return { history, addToHistory };
+  return { history, addToHistory, isLoading };
 };

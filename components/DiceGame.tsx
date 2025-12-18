@@ -24,11 +24,11 @@ const GameContainer = styled(Box)(() => ({
   maxWidth: 320,
 }));
 
-const Wrapper = styled(Box)(() => ({
+const Wrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginTop: 80,
+  marginTop: theme.spacing(10),
 }));
 
 export const DiceGame = () => {

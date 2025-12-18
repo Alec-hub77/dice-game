@@ -3,15 +3,31 @@
 import { useGameHistoryContext } from "@/context/GameHistoryContext";
 import { formatDate } from "@/utils/utils";
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+const MessageWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  paddingTop: theme.spacing(10),
+}));
 
 export const GameHistory = () => {
-  const { history } = useGameHistoryContext();
+  const { history, isLoading } = useGameHistoryContext();
+
+  if (isLoading) {
+    return (
+      <MessageWrapper>
+        <Typography>Loading...</Typography>
+      </MessageWrapper>
+    );
+  }
 
   if (!history.length) {
     return (
-      <Box pt={10}>
+      <MessageWrapper>
         <Typography>No game results yet</Typography>
-      </Box>
+      </MessageWrapper>
     );
   }
   return (
